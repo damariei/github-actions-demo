@@ -12,4 +12,4 @@ jobs:
       uses: helmfile/helmfile-action@main
       with:
         helmfile-auto-init: "true"
-        helmfile-args: apply -f test.yaml -e main-test ${{ fromJson(env.HELMFILE_SELECTORS) }}
+        helmfile-args: apply -f test.yaml -e main-test ${{ toJson(env.HELMFILE_SELECTORS) }}
