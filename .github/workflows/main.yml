@@ -5,14 +5,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: Set IMAGE TAG ENVs for helmfile
-      shell: bash
-      run: echo "BACKEND_IMAGE_TAG=v1.50.0-24-g61c2e8589 DASHBOARD_IMAGE_TAG=v1.50.0-24-g61c2e8589" | tr " " "\n" >> $GITHUB_ENV
-    - name: Set SELECTORS for helmfile
-      shell: bash
-      run: echo "BACKEND_IMAGE_TAG=v1.0.1" | sed 's/\([A-Z_]*\)_IMAGE_TAG=[^ ]*/-l name=\1/g' | awk '{print "HELMFILE_SELECTORS=\"" tolower($0) "\""}' >> $GITHUB_ENV
-    - name: Deploy client
-      uses: helmfile/helmfile-action@main
-      with:
-        helmfile-auto-init: "true"
-        helmfile-args: apply -f test.yaml -e main-test ${{ toJson(env.HELMFILE_SELECTORS) }}
+    - uses: chrisdickinson/setup-yq@latest
+    - name: Show folks how to run YQ:
+      run: |
+        awk '/---/ {exit} 1' dev.yaml | yq '.environments | keys[]'
