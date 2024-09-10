@@ -5,10 +5,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-    - run: npm install
-    - run: npm test
     - name: Set SELECTORS for helmfile
       shell: bash
       run: echo "BACKEND_IMAGE_TAG=v1.0.1" | sed 's/\([A-Z_]*\)_IMAGE_TAG=[^ ]*/-l name=\1/g' | awk '{print "HELMFILE_SELECTORS=\"" tolower($0) "\""}' >> $GITHUB_ENV
@@ -16,4 +12,4 @@ jobs:
       uses: helmfile/helmfile-action@main
       with:
         helmfile-auto-init: "true"
-        helmfile-args: apply -f test.yaml -e main-test ${{ env.HELMFILE_SELECTORS }}
+        helmfile-args: apply -f test.yaml -e main-test ${{ fromJson(env.HELMFILE_SELECTORS) }}
