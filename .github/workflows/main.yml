@@ -10,6 +10,14 @@ jobs:
       - name: Get defined clients from codebase
         shell: bash
         run: |
+          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }'
+      - name: Get defined clients from codebase
+        shell: bash
+        run: |
+          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys'
+      - name: Get defined clients from codebase
+        shell: bash
+        run: |
           echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys' -o=j -I=0
       - name: Get defined clients from codebase
         id: environments
