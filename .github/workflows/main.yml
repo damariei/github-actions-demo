@@ -6,7 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       clients: ${{ steps.environments.outputs.clients }}
-    steps:        
+    steps:
+      - uses: chrisdickinson/setup-yq@latest
       - name: Get defined clients from codebase
         id: environments
         shell: bash
