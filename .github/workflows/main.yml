@@ -12,7 +12,8 @@ jobs:
         id: environments
         shell: bash
         # Output example: clients=["main","main-mpfx",...]
-        run: echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/---/ { exit } 1' | yq '.environments | keys' -o=j -I=0 | awk '{print "clients="$1}' >> $GITHUB_OUTPUT
+        run: |
+          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/---/ { exit } 1' | yq '.environments | keys' -o=j -I=0 | awk '{print "clients="$1}' >> $GITHUB_OUTPUT
 
   deploy:
     needs: prepare
