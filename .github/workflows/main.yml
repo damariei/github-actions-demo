@@ -10,21 +10,21 @@ jobs:
       - name: Get defined clients from codebase
         shell: bash
         run: |
-          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }'
+          echo -e "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }'
       - name: Get defined clients from codebase
         shell: bash
         run: |
-          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys'
+          echo -e "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys'
       - name: Get defined clients from codebase
         shell: bash
         run: |
-          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys' -o=j -I=0
+          echo -e "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys' -o=j -I=0
       - name: Get defined clients from codebase
         id: environments
         shell: bash
         # Output example: clients=["main","main-mpfx",...]
         run: |
-          echo "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys' -o=j -I=0 | awk '{print "clients="$1}' >> $GITHUB_OUTPUT
+          echo -e "environments:\n  main:\n  main-2:\n---\ntest nothing good here" | awk '/^---$/ { exit } { print }' | yq '.environments | keys' -o=j -I=0 | awk '{print "clients="$1}' >> $GITHUB_OUTPUT
 
   deploy:
     needs: prepare
