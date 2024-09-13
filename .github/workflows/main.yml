@@ -2,10 +2,28 @@ name: CI
 on: push
 
 jobs:
-  test:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      clients: ${{ steps.environments.outputs.clients }}
     steps:
-    - uses: chrisdickinson/setup-yq@latest
-    - name: Show folks how to run YQ:
-      run: |
-        awk '/---/ {exit} 1' dev.yaml | yq '.environments | keys[]'
+      - name: Get defined clients from codebase
+        shell: bash
+        run: echo "environments:\n\tmain:\n\tmain-2\n---\ntest nothing good here" > test.yaml
+        
+      - name: Get defined clients from codebase
+        id: environments
+        shell: bash
+        # Output example: clients=["main","main-mpfx",...]
+        run: awk '/---/ { exit } 1' test.yaml | yq '.environments | keys' -o=j -I=0 | awk '{print "clients="$1}' >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        client: ${{ fromJson(needs.prepare.outputs.clients) }}
+    steps:
+    - name: Get defined clients from codebase
+      shell: bash
+      run: echo "${{ matrix.client }}"
