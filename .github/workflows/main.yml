@@ -7,7 +7,6 @@ jobs:
     outputs:
       clients: ${{ steps.environments.outputs.clients }}
     steps:
-      - uses: chrisdickinson/setup-yq@latest
       - name: Get defined clients from codebase
         id: environments
         shell: bash
